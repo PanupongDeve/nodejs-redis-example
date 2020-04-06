@@ -30,13 +30,13 @@ const getRepos = async (req, res, next) => {
 
         const data = await response.json();
 
-        const repos = data.public_repos;
+        const repos = JSON.stringify(data);
 
         // Set data to Redis
 
         client.setex(username, 3600, repos);
 
-        res.send(setResponse(username, repos));
+        res.json(data);
 
     } catch (error) {
         console.log(error);
@@ -52,7 +52,7 @@ const chche = (req, res, next) => {
         if (err) throw err;
 
         if (data !== null) {
-            res.send(setResponse(username, data));
+            res.send(JSON.parse(data));
         } else {
             next();
         }
